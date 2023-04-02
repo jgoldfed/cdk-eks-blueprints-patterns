@@ -27,7 +27,7 @@ export function populateWithContextDefaults(app: cdk.App, defaultAccount: string
     let prod_account = app.node.tryGetContext('prod_account');
     prod_account = prod_account ?? defaultAccount;
     let prod_region = app.node.tryGetContext('prod_region');
-    prod_region = prod_region?? defaultRegion;
+    prod_region = prod_region ?? defaultRegion;
     const prodEnv: cdk.Environment = { account: prod_account, region: prod_region };
     return { devEnv, pipelineEnv, prodEnv };
 }
@@ -133,7 +133,7 @@ export default class PipelineMultiEnvGitops {
         try {
 
             // const { gitOwner, gitRepositoryName } = await getRepositoryData();
-            const gitOwner = 'aws-samples';
+            const gitOwner = 'jgoldfed';
             const gitRepositoryName = 'cdk-eks-blueprints-patterns';
 
             blueprints.CodePipelineStack.builder()
