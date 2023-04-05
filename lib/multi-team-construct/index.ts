@@ -6,7 +6,7 @@ import * as blueprints from '@aws-quickstart/eks-blueprints'
 import * as team from '../teams'
 const burnhamManifestDir = './lib/teams/team-burnham/'
 const rikerManifestDir = './lib/teams/team-riker/'
-const teamManifestDirList = [burnhamManifestDir,rikerManifestDir]
+const teamManifestDirList = [burnhamManifestDir, rikerManifestDir]
 
 export default class MultiTeamConstruct {
     constructor(scope: Construct, id: string) {
@@ -34,7 +34,7 @@ export default class MultiTeamConstruct {
             new blueprints.MetricsServerAddOn,
             new blueprints.ClusterAutoScalerAddOn,
             new blueprints.CloudWatchAdotAddOn,
-            new blueprints.XrayAddOn,
+            new blueprints.XrayAdotAddOn,
             new blueprints.SecretsStoreAddOn
         ];
 

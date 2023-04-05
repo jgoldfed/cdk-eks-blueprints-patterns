@@ -7,13 +7,13 @@ import * as team from '../teams';
 
 const burnhamManifestDir = './lib/teams/team-burnham/'
 const rikerManifestDir = './lib/teams/team-riker/'
-const teamManifestDirList = [burnhamManifestDir,rikerManifestDir]
+const teamManifestDirList = [burnhamManifestDir, rikerManifestDir]
 
 
 export default class PipelineConstruct {
 
     async buildAsync(scope: Construct, props?: StackProps) {
-    
+
         await this.prevalidateSecrets();
 
         const account = process.env.CDK_DEFAULT_ACCOUNT!;
@@ -23,10 +23,10 @@ export default class PipelineConstruct {
             .addOns(
                 new blueprints.CertManagerAddOn,
                 new blueprints.AdotCollectorAddOn,
-                new blueprints.AwsLoadBalancerControllerAddOn, 
+                new blueprints.AwsLoadBalancerControllerAddOn,
                 new blueprints.NginxAddOn,
                 new blueprints.ArgoCDAddOn,
-                new blueprints.AppMeshAddOn( {
+                new blueprints.AppMeshAddOn({
                     enableTracing: true
                 }),
                 new blueprints.SSMAgentAddOn, // this is added to deal with PVRE as it is adding correct role to the node group, otherwise stack destroy won't work
@@ -34,7 +34,7 @@ export default class PipelineConstruct {
                 new blueprints.MetricsServerAddOn,
                 new blueprints.ClusterAutoScalerAddOn,
                 new blueprints.CloudWatchAdotAddOn,
-                new blueprints.XrayAddOn,
+                new blueprints.XrayAdotAddOn,
                 new blueprints.SecretsStoreAddOn)
             .teams(
                 new team.TeamRikerSetup(scope, teamManifestDirList[1]),
@@ -53,11 +53,11 @@ export default class PipelineConstruct {
                 id: 'us-west-1-sandbox',
                 stackBuilder: blueprint.clone('us-west-1')
             })
-            .wave( {
+            .wave({
                 id: "dev",
                 stages: [
-                    { id: "dev-west-1", stackBuilder: blueprint.clone('us-west-1')},
-                    { id: "dev-east-2", stackBuilder: blueprint.clone('us-east-2')},
+                    { id: "dev-west-1", stackBuilder: blueprint.clone('us-west-1') },
+                    { id: "dev-east-2", stackBuilder: blueprint.clone('us-east-2') },
                 ]
             })
             .stage({
@@ -67,11 +67,11 @@ export default class PipelineConstruct {
                     pre: [new blueprints.pipelines.cdkpipelines.ManualApprovalStep('manual-approval')]
                 }
             })
-            .wave( {
+            .wave({
                 id: "prod",
                 stages: [
-                    { id: "prod-west-1", stackBuilder: blueprint.clone('us-west-1')},
-                    { id: "prod-east-2", stackBuilder: blueprint.clone('us-east-2')},
+                    { id: "prod-west-1", stackBuilder: blueprint.clone('us-west-1') },
+                    { id: "prod-east-2", stackBuilder: blueprint.clone('us-east-2') },
                 ]
             })
             .build(scope, "pipeline", props);
@@ -82,7 +82,7 @@ export default class PipelineConstruct {
             await blueprints.utils.validateSecret('github-token', 'us-east-2');
             await blueprints.utils.validateSecret('github-token', 'us-west-1');
         }
-        catch(error) {
+        catch (error) {
             throw new Error(`github-token secret must be setup in AWS Secrets Manager for the GitHub pipeline.
             The GitHub Personal Access Token should have these scopes:
             * **repo** - to read the repository
@@ -90,4 +90,4 @@ export default class PipelineConstruct {
             * @see https://docs.aws.amazon.com/codepipeline/latest/userguide/GitHub-create-personal-token-CLI.html`);
         }
     }
- }
+}
