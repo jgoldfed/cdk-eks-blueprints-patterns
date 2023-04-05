@@ -13,7 +13,7 @@ export default class FargateConstruct {
         // Setup platform team
         const accountID = process.env.CDK_DEFAULT_ACCOUNT!
         const platformTeam = new team.TeamPlatform(accountID)
-       
+
         const fargateProfiles: Map<string, eks.FargateProfileOptions> = new Map([
             ["team1", { selectors: [{ namespace: "team1" }] }]
         ]);
@@ -21,7 +21,7 @@ export default class FargateConstruct {
         const stackID = `${id}-blueprint`
         const clusterProvider = new blueprints.FargateClusterProvider({
             fargateProfiles,
-            version: eks.KubernetesVersion.V1_21
+            version: eks.KubernetesVersion.V1_23
         });
 
         blueprints.EksBlueprint.builder()

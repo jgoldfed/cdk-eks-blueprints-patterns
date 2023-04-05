@@ -72,7 +72,7 @@ export default class PipelineMultiEnvGitops {
                     * @see https://docs.aws.amazon.com/codepipeline/latest/userguide/GitHub-create-personal-token-CLI.html`);
         }
 
-        const clusterVersion = eks.KubernetesVersion.V1_21;
+        const clusterVersion = eks.KubernetesVersion.V1_23;
 
         /* eslint-disable */
         const blueMNG = new blueprints.MngClusterProvider({
